@@ -2,15 +2,7 @@
   {
     "listing": "/projects.html",
     "items": [
-      "/posts/graphify/index.html",
-      "/posts/graphify 2/index.html"
-    ]
-  },
-  {
-    "listing": "/projects 2.html",
-    "items": [
-      "/posts/graphify/index.html",
-      "/posts/graphify 2/index.html"
+      "/posts/graphify/index.html"
     ]
   }
 ]

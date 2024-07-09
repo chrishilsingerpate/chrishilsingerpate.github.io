@@ -1,17 +1,10 @@
 [
   {
-    "objectID": "index 2.html",
-    "href": "index 2.html",
+    "objectID": "index.html",
+    "href": "index.html",
     "title": "Chris Hilsinger-Pate",
     "section": "",
-    "text": "I am a Business Analyst at Albertsons Companies, where I specialize in supply chain optimization and continuous improvement. In my role, I utilize R, Python, and SQL to develop tools and reports that enhance productivity, support informed decision-making, and drive key strategic initiatives.\n\nSkills\n\nSQL\nPython\nR\n\nPower BI\nFlask\nHTML/CSS\n\n\n\n\n\n\n\nGallery\n\n\n\n\nTop Ten Fantasy Football TE Table\n\n\n\n\n\nGraphify\n\n\n\n\n\nAudience Score and Tomatometer of Top Ten English Netflix Films\n\n\n\n\n\nTikTok Stars Across Platforms"
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Graphify: Identifying Core Spotify Artists with Network Analysis\n\n\n\n\n\n\nPython\n\n\nNetwork Analysis\n\n\nData Visualization\n\n\n\n\n\n\n\n\n\nJul 5, 2024\n\n\nChris Hilsinger-Pate\n\n\n\n\n\n\n\n\n\n\n\n\nGraphify: Spotify Network Analysis\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\nMay 27, 2024\n\n\nChris Hilsinger-Pate\n\n\n\n\n\n\nNo matching items"
+    "text": "I am a Business Analyst at Albertsons Companies, where I specialize in supply chain optimization and continuous improvement. In my role, I utilize R, Python, and SQL to develop tools and reports that enhance productivity, support informed decision-making, and drive key strategic initiatives.\n\nSkills\n\nPython\nR\n\nSQL\nPower BI\nFlask\nHTML/CSS\n\n\n\n\n\n\n\nGallery\n\n\n\n\nTop Ten Fantasy Football TE Table\n\n\n\n\n\nGraphify\n\n\n\n\n\nAudience Score and Tomatometer of Top Ten English Netflix Films\n\n\n\n\n\nTikTok Stars Across Platforms"
   },
   {
     "objectID": "posts/graphify/index.html",
@@ -77,24 +70,10 @@
     "text": "References\nFans also like. Spotify. (n.d.). https://support.spotify.com/us/artists/article/fans-also-like/   Hevey, D. (2018). Network analysis: a brief overview and tutorial. Health Psychology and Behavioral Medicine, 6(1), 301–328. https://doi.org/10.1080/21642850.2018.1521283   Scott, J. (2000). Social Network Analysis: A Handbook (Second Edition). Sage Publications."
   },
   {
-    "objectID": "posts/graphify 2/index.html",
-    "href": "posts/graphify 2/index.html",
-    "title": "Graphify: Spotify Network Analysis",
-    "section": "",
-    "text": "This is a post with executable code.\n\n\nCode\n1 + 1\n\n\n2"
-  },
-  {
-    "objectID": "projects 2.html",
-    "href": "projects 2.html",
+    "objectID": "projects.html",
+    "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Graphify: Identifying Core Spotify Artists with Network Analysis\n\n\n\n\n\n\nPython\n\n\nNetwork Analysis\n\n\nData Visualization\n\n\n\n\n\n\n\n\n\nJul 5, 2024\n\n\nChris Hilsinger-Pate\n\n\n\n\n\n\n\n\n\n\n\n\nGraphify: Spotify Network Analysis\n\n\n\n\n\n\nPython\n\n\n\n\n\n\n\n\n\nMay 27, 2024\n\n\nChris Hilsinger-Pate\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Chris Hilsinger-Pate",
-    "section": "",
-    "text": "I am a Business Analyst at Albertsons Companies, where I specialize in supply chain optimization and continuous improvement. In my role, I utilize R, Python, and SQL to develop tools and reports that enhance productivity, support informed decision-making, and drive key strategic initiatives.\n\nSkills\n\nPython\nR\n\nSQL\nPower BI\nFlask\nHTML/CSS\n\n\n\n\n\n\n\nGallery\n\n\n\n\nTop Ten Fantasy Football TE Table\n\n\n\n\n\nGraphify\n\n\n\n\n\nAudience Score and Tomatometer of Top Ten English Netflix Films\n\n\n\n\n\nTikTok Stars Across Platforms"
+    "text": "Graphify: Identifying Core Spotify Artists with Network Analysis\n\n\n\n\n\n\nPython\n\n\nNetwork Analysis\n\n\nData Visualization\n\n\n\n\n\n\n\n\n\nJul 5, 2024\n\n\nChris Hilsinger-Pate\n\n\n\n\n\n\nNo matching items"
   }
 ]

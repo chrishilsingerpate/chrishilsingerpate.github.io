@@ -221,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="creating-a-class-for-data-storage" class="level2">
 <h2 class="anchored" data-anchor-id="creating-a-class-for-data-storage">Creating a Class for Data Storage</h2>
 <p>The <code>Artist</code> class is designed to store data collected from the Spotify Web API. Each instance of the <code>Artist</code> class represents one of my top Spotify artists. While I’m not using the <code>spotify_popularity</code> and <code>user_rank</code> attributes in this particular project, they could be used to add unique visual components to the networth graph I am creating. The <code>collect_related_artists</code> method retrieves each artist’s related artists.</p>
-<div id="d8530be0" class="cell" data-execution_count="1">
+<div id="34c608e9" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data_classes.py</span></span>
@@ -285,7 +285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-functions" class="level2">
 <h2 class="anchored" data-anchor-id="define-functions">Define Functions</h2>
 <p>For this project, I need to make two distinct calls to the Spotify Web API. After the data is returned, it is processed and used to set the <code>Artist</code> class’ attributes. Both the method associated with the <code>Artist</code> class and function defined below utilize a function from the <a href="https://spotipy.readthedocs.io/en/2.24.0/">Spotipy</a> library to make API calls and then parse the data.</p>
-<div id="1b0c33d2" class="cell" data-execution_count="2">
+<div id="7a124909" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data_functions.py</span></span>
@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="import-libraries-modules-and-environment-variables">Import Libraries, Modules, and Environment Variables</h2>
 <p>Before I can collect data and visualize my network of Spotify artists, I need to obtain a Spotify authentication token. This can be done with a number of parameters available through the <a href="https://developer.spotify.com/documentation/web-api/tutorials/getting-started">Spotify Developer portal</a>.</p>
 <p>I also define two variables – <code>N_ARTISTS</code> and <code>TIME_PERIOD</code> – in the following code chunk. Knowing my tendency to listen to a few artists in a high concentration, I opted to query only my top 30 artists. Querying more artists may lead to a more interesting graph but poses the risk of diluting the focus of the analysis. Including artists I hardly listen to in my analysis will provide little insight into my music taste. As for the time period I’ll be querying, I opted to go with my data from the last six months (medium term).</p>
-<div id="a30523e4" class="cell" data-execution_count="3">
+<div id="fd18fe18" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># main.py</span></span>
@@ -366,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="code-execution">Code Execution</h2>
 <p>I am creating my network with <a href="https://networkx.org/documentation/stable/index.html">NetworkX</a> and visualizing it with <a href="https://pyviz.org/">PyViz</a>. To enhance the network visualization, I’m using each artist’s Spotify image to depict their node.</p>
 <p>One thing worth noting is that Spotify’s “Fans Also Like” is not always recriprocal. For example, Kacey Musgraves appears on Noah Kahan’s “Fans Also Like” but he does not appear on hers. A directed graph would most commonly be used to represent this type of relationship. However, I am using an undirected graph because the presence of an artist under another artist’s “Fans Also Like” – even if it is not recripocated – is reflective of a shared subset of fans. Artists who share a reciprocal connection will be connected by a bolder line, which represents an edge with greater weight.</p>
-<div id="676509c8" class="cell" data-execution_count="4">
+<div id="4bfa9fb2" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># main.py</span></span>
