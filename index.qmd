@@ -20,9 +20,9 @@ about:
 I am a Business Analyst at Albertsons Companies, where I specialize in supply chain optimization and continuous improvement. In my role, I utilize R, Python, and SQL to develop tools and reports that enhance productivity, support informed decision-making, and drive key strategic initiatives.
 
 ### Skills
-* SQL
 * Python
 * R   
+* SQL 
 * Power BI
 * Flask
 * HTML/CSS

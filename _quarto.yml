@@ -21,7 +21,5 @@ format:
     css: styles.css
     toc: true
     code-fold: show
-    code-link: true
-    page-layout: article 
 
 
