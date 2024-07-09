@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 95vh;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Noah Kahan", "image": "https://i.scdn.co/image/ab6761610000e5eb336ec53126239813d38ff588", "label": "Noah Kahan", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Zach Bryan", "image": "https://i.scdn.co/image/ab6761610000e5eb4fd54df35bfcfa0fc9fc2da7", "label": "Zach Bryan", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Hozier", "image": "https://i.scdn.co/image/ab6761610000e5ebad85a585103dfc2f3439119a", "label": "Hozier", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "The Lumineers", "image": "https://i.scdn.co/image/ab6761610000e5ebcd78dff00211f22f2c10ffdb", "label": "The Lumineers", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Kacey Musgraves", "image": "https://i.scdn.co/image/ab6761610000e5ebc548c7ff983f25641dc71ffe", "label": "Kacey Musgraves", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Gregory Alan Isakov", "image": "https://i.scdn.co/image/ab6761610000e5eb4528d0f9bb51b241561a16f3", "label": "Gregory Alan Isakov", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Caamp", "image": "https://i.scdn.co/image/ab6761610000e5eb14a8f509151ea8cbba5c75d5", "label": "Caamp", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Lana Del Rey", "image": "https://i.scdn.co/image/ab6761610000e5ebb99cacf8acd5378206767261", "label": "Lana Del Rey", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "The Weeknd", "image": "https://i.scdn.co/image/ab6761610000e5eb214f3cf1cbe7139c1e26ffbb", "label": "The Weeknd", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Olivia Rodrigo", "image": "https://i.scdn.co/image/ab6761610000e5ebe03a98785f3658f0b6461ec4", "label": "Olivia Rodrigo", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "The Neighbourhood", "image": "https://i.scdn.co/image/ab6761610000e5ebdf0b5ac84376a0a4b2166816", "label": "The Neighbourhood", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Taylor Swift", "image": "https://i.scdn.co/image/ab6761610000e5ebe672b5f553298dcdccb0e676", "label": "Taylor Swift", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Billie Eilish", "image": "https://i.scdn.co/image/ab6761610000e5eb4a21b4760d2ecb7b0dcdc8da", "label": "Billie Eilish", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Conan Gray", "image": "https://i.scdn.co/image/ab6761610000e5ebc1c8fa15e08cb31eeb03b771", "label": "Conan Gray", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Harry Styles", "image": "https://i.scdn.co/image/ab6761610000e5ebf7db7c8ede90a019c54590bb", "label": "Harry Styles", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Travis Scott", "image": "https://i.scdn.co/image/ab6761610000e5eb19c2790744c792d05570bb71", "label": "Travis Scott", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Kanye West", "image": "https://i.scdn.co/image/ab6761610000e5eb6e835a500e791bf9c27a422a", "label": "Kanye West", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Drake", "image": "https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9", "label": "Drake", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Frank Ocean", "image": "https://i.scdn.co/image/ab6761610000e5ebee3123e593174208f9754fab", "label": "Frank Ocean", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Bon Iver", "image": "https://i.scdn.co/image/ab6761610000e5eb67be065df01f37a3880216be", "label": "Bon Iver", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Richy Mitch \u0026 The Coal Miners", "image": "https://i.scdn.co/image/ab6761610000e5eb51abaf8b6b1eea7d8363d64c", "label": "Richy Mitch \u0026 The Coal Miners", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "The Head And The Heart", "image": "https://i.scdn.co/image/ab6761610000e5ebc1332a509f6d8382c6d8996a", "label": "The Head And The Heart", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "John Vincent III", "image": "https://i.scdn.co/image/ab6761610000e5eb0094cb993c3f6248ae2d1be8", "label": "John Vincent III", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Bastille", "image": "https://i.scdn.co/image/ab6761610000e5eb8adcc86be23d2ed5b922d9f9", "label": "Bastille", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Dua Lipa", "image": "https://i.scdn.co/image/ab6761610000e5eb0c68f6c95232e716f0abee8d", "label": "Dua Lipa", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Beyonc\u00e9", "image": "https://i.scdn.co/image/ab6761610000e5eb247f44069c0bd1781df2f785", "label": "Beyonc\u00e9", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Still Woozy", "image": "https://i.scdn.co/image/ab6761610000e5eb213487aac43637b03baf9db8", "label": "Still Woozy", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Sierra Ferrell", "image": "https://i.scdn.co/image/ab6761610000e5eb5194bc95cebcc1215919418e", "label": "Sierra Ferrell", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "Bad Bunny", "image": "https://i.scdn.co/image/ab6761610000e5eb9ad50e478a469448c6f369df", "label": "Bad Bunny", "shape": "circularImage", "size": 30}, {"color": "#97c2fc", "id": "YoungBoy Never Broke Again", "image": "https://i.scdn.co/image/ab6761610000e5ebb1d6eaf7ad3417765577cac4", "label": "YoungBoy Never Broke Again", "shape": "circularImage", "size": 30}]);
+                  edges = new vis.DataSet([{"color": "black", "from": "Noah Kahan", "to": "Zach Bryan", "width": 2}, {"color": "black", "from": "Noah Kahan", "to": "Hozier", "width": 2}, {"color": "black", "from": "Noah Kahan", "to": "The Lumineers", "width": 2}, {"color": "black", "from": "Noah Kahan", "to": "Kacey Musgraves", "width": 1}, {"color": "black", "from": "Noah Kahan", "to": "Gregory Alan Isakov", "width": 1}, {"color": "black", "from": "Noah Kahan", "to": "Caamp", "width": 1}, {"color": "black", "from": "Lana Del Rey", "to": "The Weeknd", "width": 1}, {"color": "black", "from": "Lana Del Rey", "to": "Olivia Rodrigo", "width": 2}, {"color": "black", "from": "Lana Del Rey", "to": "The Neighbourhood", "width": 2}, {"color": "black", "from": "Lana Del Rey", "to": "Taylor Swift", "width": 1}, {"color": "black", "from": "Lana Del Rey", "to": "Billie Eilish", "width": 1}, {"color": "black", "from": "Lana Del Rey", "to": "Conan Gray", "width": 1}, {"color": "black", "from": "Lana Del Rey", "to": "Harry Styles", "width": 1}, {"color": "black", "from": "The Weeknd", "to": "Billie Eilish", "width": 1}, {"color": "black", "from": "The Weeknd", "to": "Travis Scott", "width": 1}, {"color": "black", "from": "The Weeknd", "to": "Harry Styles", "width": 1}, {"color": "black", "from": "The Weeknd", "to": "Kanye West", "width": 1}, {"color": "black", "from": "The Weeknd", "to": "Drake", "width": 1}, {"color": "black", "from": "The Weeknd", "to": "The Neighbourhood", "width": 1}, {"color": "black", "from": "The Weeknd", "to": "Frank Ocean", "width": 1}, {"color": "black", "from": "Gregory Alan Isakov", "to": "Hozier", "width": 1}, {"color": "black", "from": "Gregory Alan Isakov", "to": "Bon Iver", "width": 1}, {"color": "black", "from": "Gregory Alan Isakov", "to": "Richy Mitch \u0026 The Coal Miners", "width": 2}, {"color": "black", "from": "Gregory Alan Isakov", "to": "Caamp", "width": 2}, {"color": "black", "from": "Gregory Alan Isakov", "to": "The Head And The Heart", "width": 2}, {"color": "black", "from": "Gregory Alan Isakov", "to": "John Vincent III", "width": 2}, {"color": "black", "from": "Gregory Alan Isakov", "to": "The Lumineers", "width": 1}, {"color": "black", "from": "Hozier", "to": "The Lumineers", "width": 2}, {"color": "black", "from": "Hozier", "to": "Bon Iver", "width": 1}, {"color": "black", "from": "Hozier", "to": "Bastille", "width": 1}, {"color": "black", "from": "Bon Iver", "to": "The Lumineers", "width": 1}, {"color": "black", "from": "Bon Iver", "to": "The Head And The Heart", "width": 1}, {"color": "black", "from": "Bastille", "to": "The Lumineers", "width": 1}, {"color": "black", "from": "Richy Mitch \u0026 The Coal Miners", "to": "John Vincent III", "width": 2}, {"color": "black", "from": "Richy Mitch \u0026 The Coal Miners", "to": "Caamp", "width": 1}, {"color": "black", "from": "Caamp", "to": "The Head And The Heart", "width": 2}, {"color": "black", "from": "Caamp", "to": "John Vincent III", "width": 2}, {"color": "black", "from": "Caamp", "to": "The Lumineers", "width": 1}, {"color": "black", "from": "Dua Lipa", "to": "Olivia Rodrigo", "width": 1}, {"color": "black", "from": "Dua Lipa", "to": "Harry Styles", "width": 2}, {"color": "black", "from": "Dua Lipa", "to": "Taylor Swift", "width": 1}, {"color": "black", "from": "Dua Lipa", "to": "Billie Eilish", "width": 1}, {"color": "black", "from": "Travis Scott", "to": "Kanye West", "width": 2}, {"color": "black", "from": "Travis Scott", "to": "Drake", "width": 1}, {"color": "black", "from": "Olivia Rodrigo", "to": "Harry Styles", "width": 2}, {"color": "black", "from": "Olivia Rodrigo", "to": "Taylor Swift", "width": 2}, {"color": "black", "from": "Olivia Rodrigo", "to": "Billie Eilish", "width": 2}, {"color": "black", "from": "Olivia Rodrigo", "to": "Conan Gray", "width": 1}, {"color": "black", "from": "The Head And The Heart", "to": "The Lumineers", "width": 2}, {"color": "black", "from": "Conan Gray", "to": "Harry Styles", "width": 1}, {"color": "black", "from": "Conan Gray", "to": "The Neighbourhood", "width": 2}, {"color": "black", "from": "Conan Gray", "to": "Taylor Swift", "width": 1}, {"color": "black", "from": "Conan Gray", "to": "Billie Eilish", "width": 1}, {"color": "black", "from": "Harry Styles", "to": "Taylor Swift", "width": 1}, {"color": "black", "from": "Harry Styles", "to": "Billie Eilish", "width": 1}, {"color": "black", "from": "Kanye West", "to": "Drake", "width": 1}, {"color": "black", "from": "Kanye West", "to": "Frank Ocean", "width": 1}, {"color": "black", "from": "The Neighbourhood", "to": "Billie Eilish", "width": 1}, {"color": "black", "from": "Taylor Swift", "to": "Billie Eilish", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
