@@ -1,0 +1,308 @@
+---
+title: "Graphify: Identifying Core Spotify Artists with Network Analysis"
+author: "Chris Hilsinger-Pate"
+date: "2024-07-05"
+categories: [Python, Network Analysis, Data Visualization]
+image: "Screenshot 2024-05-27 at 9.58.13 PM.png"
+---
+
+_Uncover insights into individual music preferences through the lens of network analysis._
+
+## Introduction
+As the boundaries between music genres have become increasingly blurred, discussions about music preferences often devolve
+into people rattling off lists of artists they listen to, without giving much thought to how those artists fit into the 
+broader context of their personal playlists. In an effort to make more sense of my own music taste, I turned to network analysis. 
+
+Networks are structures consisting of entities (nodes) and their relationships (edges), and network analysis provides the methods to 
+analyze the core features and patterns of networks (Hevey, 2018). A network people are likely familiar with is their social media network.
+In a social media network such as LinkedIn, individuals are nodes and their "Connections" are edges, indicating a relationship of some sort 
+between people. 
+
+For this project, each of my top 30 most listened to Spotify artists will be represented as nodes. The edges between nodes will be determined
+by each artist's related artists as defined by Spotify's "Fans Also Like" feature. Spotify selects an artist's related
+artists based on the listening habits of their fans ("Fans also like", n.d.). For example, an edge exists between Noah Kahan
+and Zach Bryan because they appear on each other's "Fans Also Like" lists (as of June 15, 2024).
+
+In order to access one's own Spotify data via the Spotify Web API, a Spotify Developer account is required. Spotify users can sign up for a Developer 
+account <a href="https://developer.spotify.com/documentation/web-api/tutorials/getting-started">here</a>. 
+
+## Creating a Class for Data Storage 
+The `Artist` class is designed to store data collected from the Spotify Web API. Each instance of the `Artist` class represents one of my top Spotify artists. While I'm not using the `spotify_popularity` and `user_rank` attributes in this particular project, they could be used to add unique visual components to 
+the networth graph I am creating. The `collect_related_artists` method retrieves each artist's related artists. 
+```{python}
+#| eval: false 
+# data_classes.py
+class Artist:
+    """
+    Data class to store a Spotify artist's attributes.
+
+    Attributes:
+        name (str): The name of the artist.
+        id (str): The artist's Spotify unique identifier.
+        image_url (str): URL to the artist's Spotify image.
+        spotify_popularity (int): Popularity score of the artist on Spotify (0 to 100).
+        user_rank (int): Rank of the artist among the user's most listened to artists.
+        related_artists (list): List of the artist's "Fans also like" artists (includes 
+                                artists not featured on mobile "Fans also like").
+
+    """
+
+    def __init__(self, name, id, image_url, spotify_popularity, user_rank, related_artists=None):
+        """
+        Initializes an Artist instance with the given attributes. 
+
+        Args:
+            name (str): The name of the artist.
+            id (str): The artist's Spotify unique identifier.
+            image_url (str): URL to the artist's Spotify image.
+            spotify_popularity (int): Popularity score of the artist on Spotify (0 to 100).
+            user_rank (int): Rank of the artist among the user's most listened to artists.
+            related_artists (list, optional): List of the artist's "Fans also like" artists. 
+                                              Defaults to an empty list if not provided.
+        """
+        self.name = name 
+        self.id = id 
+        self.image_url = image_url 
+        self.spotify_popularity = spotify_popularity 
+        self.user_rank = user_rank
+        if related_artists is None:
+            related_artists = []
+        self.related_artists = related_artists
+
+    def collect_related_artists(self, key):
+        """
+        Collects Spotify's "Fans also like" artists for each of the user's top artists.
+
+        This function updates each 'Artist' object with a list of the artist's related 
+        artists using the Spotify Web API. 
+
+        Args:
+            key (spotipy.Spotify): Authenticated Spotify API client.
+            top_ten_artists (list of Artist): A list of 'Artist' objects to query.
+        
+        Raises: 
+            spotipy.SpotifyException: If there is an error in the Spotify API request.
+        """
+        sp = key 
+        related_artists = sp.artist_related_artists(self.id)
+        self.related_artists = [musician['name'] for musician in related_artists['artists']]
+```
+
+## Define Functions
+For this project, I need to make two distinct calls to the Spotify Web API. After the data is returned, it is processed and used to set the `Artist` class' attributes. Both the method associated with the `Artist` class and function defined below utilize a function from the <a href="https://spotipy.readthedocs.io/en/2.24.0/">Spotipy</a> library to make API calls and then parse the data.
+
+```{python}
+#| eval: false 
+# data_functions.py
+import spotipy
+from data_classes import Artist
+
+def collect_top_artists(key, time_period, n_artists):
+    """
+    Collects the user's top Spotify artists.
+
+    Retrieves the user's top artists over a given time period from the Spotify Web API. 
+    It returns a list of 'Artist' instances.
+
+    Args:
+        key (spotipy.Spotify): Authenticated Spotify API client.
+        time_period (str): The time range over which to retrieve top artists. 
+                           Valid values are 'short_term' (1 month), 'medium_term' 
+                           (6 months), and 'long_term' (all-time).
+        n_artists (int): The number of top artists to retrieve.
+                           
+    Returns:
+        A list of 'Artist' objects representing the user's top artists.
+        
+    Raises:
+        spotipy.SpotifyException: If there is an error in the Spotify API request.
+    """
+    sp = key 
+    top_artists = sp.current_user_top_artists(time_range=time_period, limit=n_artists)
+    top_thirty_artists = []
+    for i in range(n_artists):
+        top_thirty_artists.append(Artist(top_artists['items'][i]['name'], 
+                                      top_artists['items'][i]['id'], 
+                                      top_artists['items'][i]['images'][0]['url'], 
+                                      top_artists['items'][i]['popularity'], i + 1))
+    return top_thirty_artists
+```
+
+## Import Libraries, Modules, and Environment Variables
+Before I can collect data and visualize my network of Spotify artists, I need to obtain a Spotify authentication token. This can be done with a number of parameters available through the 
+<a href="https://developer.spotify.com/documentation/web-api/tutorials/getting-started">Spotify Developer portal</a>. 
+
+I also define two variables -- `N_ARTISTS` and `TIME_PERIOD` -- in the following code chunk. Knowing my tendency to listen to a few artists in a high concentration, I opted to query only my top 30 artists. Querying more artists may lead to a more interesting graph but poses the risk of diluting the focus of the analysis. Including artists I hardly listen to in my analysis will provide little insight into my music taste. As for the time period I'll be querying, I opted to go with my data from the last six months (medium term). 
+
+```{python}
+# main.py
+import spotipy 
+from spotipy.oauth2 import SpotifyOAuth
+from data_classes import Artist
+from data_functions import collect_top_artists, collect_related_artists
+import dotenv
+import os 
+import networkx as nx
+import matplotlib.pyplot as plt
+from pyvis.network import Network
+
+# Load environment variables
+dotenv.load_dotenv()
+ 
+CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
+SCOPE = os.getenv("SPOTIFY_SCOPE")
+
+# Authenticate your Spotify account -- this will be your key
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID, 
+                                               client_secret=CLIENT_SECRET,
+                                               redirect_uri=REDIRECT_URI,
+                                               scope=SCOPE))
+
+# Define how many artists to query and over which length of time 
+N_ARTISTS = 30
+TIME_PERIOD = "medium_term"
+```
+
+## Code Execution
+I am creating my network with <a href="https://networkx.org/documentation/stable/index.html">NetworkX</a> and visualizing it with <a href="https://pyviz.org/">PyViz</a>. To enhance the network visualization, I'm using each artist's Spotify image to depict their node. 
+
+One thing worth noting is that Spotify's "Fans Also Like" is not always recriprocal. For example, Kacey Musgraves appears on Noah Kahan's "Fans Also Like" but he does not appear on hers. A directed graph would most commonly be used to represent this type of relationship. However, I am using an undirected graph because the presence of an artist under another artist's "Fans Also Like" -- even if it is not recripocated -- is reflective of a shared subset of fans. Artists who share a reciprocal connection will be connected by a bolder line, which represents an edge with greater weight.
+
+``` {python}
+#| eval: false
+# main.py
+# Store artist data in a list (note that data is stored in Artist class)
+top_thirty_artists = collect_top_artists(sp, TIME_PERIOD, N_ARTISTS)
+
+# Collect list of artists in each artist's "Fans also like"
+for artist in top_thirty_artists:
+    artist.collect_related_artists(sp)
+
+# Initialize your network of artists
+N = nx.Graph()
+
+# Create a node for each of the top artists
+for artist in top_thirty_artists:
+    N.add_node(artist.name, size=30, shape='circularImage', image=artist.image_url)
+
+# Check if each top artist is in the other top artists' "Fans also like" 
+# If edge already exists, adjust the weight; create edge if one does not exist 
+for artist in top_thirty_artists:
+    for different_artist in top_thirty_artists:
+        if artist != different_artist:
+            if artist.name in different_artist.related_artists:
+                if N.has_edge(artist.name, different_artist.name):
+                    N[artist.name][different_artist.name]['weight'] += 1
+                else:
+                    N.add_edge(artist.name, different_artist.name, weight=1, color="black")
+
+# Store the betweenness centrality of each artist in a dictionary
+centrality_values = nx.betweenness_centrality(N)
+
+# Store the degree centrality of each artist in a dictionary
+degree_values = nx.degree_centrality(N)
+
+net_test = Network(notebook=True, directed=False, height='95vh', width='100%')
+net_test.from_nx(N)
+new_test_path = 'graph.html'
+net_test.show(new_test_path)
+
+```
+
+```{python}
+#| warning: false
+#| error: false
+#| echo: false
+import json
+from data_functions import test_collect_related_artists
+
+def load_data(filename):
+    with open(filename, 'r') as f:
+        return json.load(f)
+#| include: false
+data_filename = 'top_artists_data_30.json'
+
+if os.path.exists(data_filename):
+    # Load data from the file
+    top_artists_data = load_data(data_filename)
+    top_ten_artists = [Artist(**artist) for artist in top_artists_data]
+else:
+    # Collect artist information
+    top_ten_artists = collect_top_artists(sp, time_period, n_artists)
+    
+    # Convert Artist objects to dictionaries to save to file
+    top_artists_data = [artist.__dict__ for artist in top_ten_artists]
+    save_data(top_artists_data, data_filename)
+
+# Collect list of artists in each artist's "Fans also like" if not already loaded
+test_collect_related_artists(sp, top_ten_artists)
+
+# Initialize your network of artists
+N = nx.Graph()
+
+# Create a node for each of the top artists
+for artist in top_ten_artists:
+    N.add_node(artist.name, size=50, shape='circularImage', image=artist.image_url)
+
+# Check if each top artist is in the other top artists' "Fans also like" 
+# If edge already exists, adjust the weight; create edge if one does not exist 
+for artist in top_ten_artists:
+    for different_artist in top_ten_artists:
+        if artist != different_artist:
+            if artist.name in different_artist.related_artists:
+                if N.has_edge(artist.name, different_artist.name):
+                    N[artist.name][different_artist.name]['weight'] += 1
+                else:
+                    N.add_edge(artist.name, different_artist.name, weight=1, color="black")
+
+centrality_values = nx.betweenness_centrality(N)
+# print(centrality_values)
+top_three_betweenness = sorted(centrality_values.items(), key=lambda item: item[1], reverse=True)[:3]
+# for artist, value in top_three_betweenness:
+#     print(f'{artist}: {value}')
+
+degree_values = nx.degree_centrality(N)
+# print(degree_values)
+top_three_degree = sorted(degree_values.items(), key=lambda item: item[1], reverse=True)[:3]
+# for artist, value in top_three_degree:
+#     print(f'{artist}: {value}')
+
+net_test = Network(notebook=True, directed=False, height='95vh', width='100%', cdn_resources='in_line')
+net_test.from_nx(N)
+new_test_path = 'graph30.html'
+#net_test.show(new_test_path)
+```
+
+## Results
+_Zoom within the frame for a better view of the artists. Click and drag nodes to move artists._
+<iframe src="graph30.html" width="100%" height="600px" frameborder="0"></iframe>
+
+:::{.callout-note}
+I am using _cluster_ in accordance with John Scott's definition: "An area of relatively high density in a graph" (2000, p. 127).
+:::
+
+At first glance, the graph reveals two distinct clusters. In addition to those two clusters, there are five artists without any connections; they are completely isolated from the rest of the network. 
+
+One metric we can use to describe the graph is inclusiveness, "...the number of points that are included within the various connected parts of the graph" (Scott, 2000, p. 70). __Considering five of my top 30 artists are without any connections, the inclusiveness of my network (expressed as a proportion) is 0.83.__ A perfectly inclusive network would have an inclusiveness score of 1. Without other Spotify networks to compare to, it is impossible for me to say if my network of top artists is highly or minimally inclusive.  
+
+To better understand which artists are most important in my network, I turned to centrality measures. The two centrality measures I'm interested in for this project are betweenness centrality and degree centrality. 
+
+Betweenness centrality measures "...the extent to which a particular point lies 'between' the various other points in the graph" (Scott, 2000, 87). One can think of betweenness centrality as a measure of how important a node is as a "bridge" between other nodes. __The artists with the two highest betweenness centrality scores in my network are The Weeknd and Noah Kahan.__ The Weeknd's role as a bridge is especially apparent as he is the sole connector between my "pop" artists and "hip hop/R&B" artists.
+
+Degree centrality is effectively a popularity score as it measures how many nodes a node is connected to. __The Weeknd, Gregory Alan Isakov, and Billie Eilish tied for the highest degree centrality with a 0.28.__ 
+
+__Network analysis reveals that my music taste is not one-dimensional and is most strongly characterized by two distinct clusters of artists. The Weeknd's role as both a connector and highly popular figure in my network of artists underscores his significance in my music preferences.__
+
+## Future Applications
+While this project utilized network analysis for its descriptive power, network analysis can also be used for predictive purposes. One such use case would be a recommendation system to recommend new artists whose music a person is likely to enjoy. Beyond music preferences and listening habits, network analysis offers valuable applications in a number of business contexts. For example, network analysis may be immensely valuable in a merger and acquisition, where seamless integration is of the utmost importance. Network analysis could reveal structural holes and knowledge gaps that would have the potential to lead to a loss of tribal knowledge and disrupt integration processes. 
+
+## References
+_Fans also like_. Spotify. (n.d.). https://support.spotify.com/us/artists/article/fans-also-like/ 
+<br>
+<br>
+Hevey, D. (2018). Network analysis: a brief overview and tutorial. Health Psychology and Behavioral Medicine, 6(1), 301–328. https://doi.org/10.1080/21642850.2018.1521283
+<br>
+<br>
+Scott, J. (2000). Social Network Analysis: A Handbook (Second Edition). Sage Publications. 

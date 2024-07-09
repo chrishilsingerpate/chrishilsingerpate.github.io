@@ -1,0 +1,27 @@
+project:
+  type: website
+
+website:
+  title: "Chris Hilsinger-Pate"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Projects
+        href: projects.qmd
+    right:
+      - icon: github
+        href: https://github.com/chrishilsingerpate
+      - icon: linkedin
+        href: https://www.linkedin.com/in/chris-hilsinger-pate-086435173/
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    code-fold: show
+    code-link: true
+    page-layout: article 
+
+

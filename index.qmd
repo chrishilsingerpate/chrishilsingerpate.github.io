@@ -1,0 +1,40 @@
+---
+title: "Chris Hilsinger-Pate"
+image: images/IMG_6541.jpeg
+about: 
+    id: hero-heading
+    template: trestles
+    image-width: 20em
+    image-shape: round
+    links:
+        - icon: github
+          href: https://github.com/chrishilsingerpate
+        - icon: linkedin
+          href: https://www.linkedin.com/in/chris-hilsinger-pate-086435173/
+        - icon: envelope 
+          href: mailto:christopher.h.pate@gmail.com
+---
+
+:::{#hero-heading}
+
+I am a Business Analyst at Albertsons Companies, where I specialize in supply chain optimization and continuous improvement. In my role, I utilize R, Python, and SQL to develop tools and reports that enhance productivity, support informed decision-making, and drive key strategic initiatives.
+
+### Skills
+* SQL
+* Python
+* R   
+* Power BI
+* Flask
+* HTML/CSS
+
+:::
+<br>
+<h4 class="gallery-header center">Gallery<h4>
+
+![Top Ten Fantasy Football TE Table](visualizations/Tight End Fantasy Football Data.jpeg)
+
+![Graphify](visualizations/graphify_video (1).gif)
+
+![Audience Score and Tomatometer of Top Ten English Netflix Films](visualizations/Netflix_Visualization.jpeg)
+
+![TikTok Stars Across Platforms](visualizations/followerjan23.png)
