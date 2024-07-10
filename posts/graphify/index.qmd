@@ -296,7 +296,9 @@ Degree centrality is effectively a popularity score as it measures how many node
 __Network analysis reveals that my music taste is not one-dimensional and is most strongly characterized by two distinct clusters of artists. The Weeknd's role as both a connector and highly popular figure in my network of artists underscores his significance in my music preferences.__
 
 ## Future Applications
-While this project utilized network analysis for its descriptive power, network analysis can also be used for predictive purposes. One such use case would be a recommendation system to recommend new artists whose music a person is likely to enjoy. Beyond music preferences and listening habits, network analysis offers valuable applications in a number of business contexts. For example, network analysis may be immensely valuable in a merger and acquisition, where seamless integration is of the utmost importance. Network analysis could reveal structural holes and knowledge gaps that would have the potential to lead to a loss of tribal knowledge and disrupt integration processes. 
+While this project utilized network analysis for its descriptive power, network analysis can also be used for predictive purposes. One such use case would be a recommendation system to recommend new artists whose music a person is likely to enjoy. Beyond music preferences and listening habits, network analysis offers valuable applications in a number of business contexts. For example, network analysis may be immensely valuable in a merger and acquisition, where seamless integration is of the utmost importance. Network analysis could reveal structural holes and knowledge gaps that would have the potential to lead to a loss of tribal knowledge and disrupt integration processes.
+
+THIS IS A TEST
 
 ## References
 _Fans also like_. Spotify. (n.d.). https://support.spotify.com/us/artists/article/fans-also-like/ 
