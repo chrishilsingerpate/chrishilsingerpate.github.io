@@ -34,10 +34,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v3
 
-      - name: Install dependencies
+      - name: Venv and requirements
         run: |
+          python -m venv venv
+          source venv/bin/activate
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Ensure you have a requirements.txt file with your dependencies
+          pip install -r requirements.txt
 
       - name: Inject secrets
         run: |
