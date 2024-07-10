@@ -54,4 +54,7 @@ jobs:
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_site  # Ensure this matches your output directory
 
